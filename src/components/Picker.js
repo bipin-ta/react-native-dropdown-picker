@@ -167,6 +167,9 @@ function Picker({
     const [necessaryItems, setNecessaryItems] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [pickerHeight, setPickerHeight] = useState(0);
+    const [pickerWidth, setPickerWidth] = useState(0)
+    const [xCoordinate, setXCoordinate] = useState(0)
+    const [yCoordinate, setYCoordinate] = useState(0)
     const [direction, setDirection] = useState(GET_DROPDOWN_DIRECTION(dropDownDirection));
 
     const badgeFlatListRef = useRef();
@@ -648,15 +651,18 @@ function Picker({
         onPress(isOpen);
 
         if (isOpen && dropDownDirection === DROPDOWN_DIRECTION.AUTO) {
-            const [, y] = await new Promise((resolve) =>
+            const [x, y] = await new Promise((resolve) =>
                 pickerRef.current.measureInWindow((...args) => resolve(args))
             );
+
             const size = y + maxHeight + pickerHeight + bottomOffset;
 
             const direction = size < WINDOW_HEIGHT ? 'top' : 'bottom';
 
             onDirectionChanged(direction);
             setDirection(direction);
+            setYCoordinate(y)
+            setXCoordinate(x)
         }
 
         onPressToggle();
@@ -681,6 +687,7 @@ function Picker({
         onLayout(e);
 
         setPickerHeight(e.nativeEvent.layout.height);
+        setPickerWidth(e.nativeEvent.layout.width);
     }, [onLayout]);
 
     /**
@@ -1644,11 +1651,13 @@ function Picker({
      * @returns {JSX.Element}
      */
     const DropDownComponentWrapper = useCallback((Component) => (
-        <View style={_dropDownContainerStyle}>
-            {SearchComponent}
-            {Component}
-        </View>
-    ), [_dropDownContainerStyle, SearchComponent]);
+        <Modal visible={open} onRequestClose={onRequestCloseModal} transparent={true} >
+            <View style={[_dropDownContainerStyle, { marginTop: yCoordinate + (direction == 'top' ? 10 : 0), width: pickerWidth, start: xCoordinate },]}>
+                {SearchComponent}
+                {Component}
+            </View>
+        </Modal>
+    ), [_dropDownContainerStyle, SearchComponent, open]);
 
     /**
      * The ActivityIndicatorComponent.
@@ -1825,3 +1834,4 @@ const styles = StyleSheet.create({
 });
 
 export default memo(Picker);
+
