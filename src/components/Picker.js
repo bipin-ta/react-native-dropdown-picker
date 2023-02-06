@@ -1653,7 +1653,8 @@ function Picker({
     const DropDownComponentWrapper = useCallback((Component) => (
         <Modal visible={open} onRequestClose={onRequestCloseModal} transparent={true} >
             <TouchableOpacity activeOpacity={1} style={{
-                backgroundColor: 'rgba(61, 61, 61, 0.4)'
+                backgroundColor: 'rgba(61, 61, 61, 0.2)',
+                flex:1
             }}
                 onPress={onRequestCloseModal}>
                 <View style={[_dropDownContainerStyle, { marginTop: yCoordinate + (direction == 'top' ? 10 : 0), width: pickerWidth, start: xCoordinate },]}>
