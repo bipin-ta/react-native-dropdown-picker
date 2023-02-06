@@ -62,6 +62,7 @@ function Picker({
     style = {},
     textStyle = {},
     labelStyle = {},
+    floatingLabelStyle = {},
     arrowIconStyle = {},
     tickIconStyle = {},
     closeIconStyle = {},
@@ -1173,6 +1174,26 @@ function Picker({
     }, [_mode, SimpleBodyComponent, BadgeBodyComponent, multiple]);
 
     /**
+     * The floating label component.
+     */
+    const _FloatingLabelComponent = useMemo(() => {
+        const label = getLabel(null) || value
+        if (label != null && floatingLabelStyle != {}) {
+            return <Text style={[floatingLabelStyle, {
+                position: 'absolute',
+                top: -8,
+                marginStart: 15,
+                fontSize: 12,
+                paddingHorizontal: 5
+            }]}>
+                {placeholder}
+            </Text>
+        } else {
+            return null
+        }
+    }, [placeholder, floatingLabelStyle, value]);
+
+    /**
      * The list item container style.
      * @returns {object}
      */
@@ -1654,7 +1675,7 @@ function Picker({
         <Modal visible={open} onRequestClose={onRequestCloseModal} transparent={true} >
             <TouchableOpacity activeOpacity={1} style={{
                 backgroundColor: 'rgba(61, 61, 61, 0.2)',
-                flex:1
+                flex: 1
             }}
                 onPress={onRequestCloseModal}>
                 <View style={[_dropDownContainerStyle, { marginTop: yCoordinate + (direction == 'top' ? 10 : 0), width: pickerWidth, start: xCoordinate },]}>
@@ -1825,6 +1846,7 @@ function Picker({
     return (
         <View style={_containerStyle} {...containerProps}>
             <TouchableOpacity style={_style} onPress={__onPress} onLayout={__onLayout} {...props} ref={onRef} pointerEvents={pointerEvents} disabled={disabled} testID={testID}>
+                {_FloatingLabelComponent}
                 {_BodyComponent}
                 {_ArrowComponent}
             </TouchableOpacity>
