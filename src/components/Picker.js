@@ -132,7 +132,7 @@ function Picker({
     props = {},
     itemProps = {},
     itemLabelProps = {},
-    badgeProps= {},
+    badgeProps = {},
     modalProps = {},
     flatListProps = {},
     scrollViewProps = {},
@@ -141,18 +141,18 @@ function Picker({
     min = null,
     max = null,
     addCustomItem = false,
-    setOpen = () => {},
-    setItems = () => {},
+    setOpen = () => { },
+    setItems = () => { },
     disableBorderRadius = true,
     containerProps = {},
-    onLayout = (e) => {},
-    onPress = (open) => {},
-    onOpen = () => {},
-    onClose = () => {},
-    setValue = (callback) => {},
-    onChangeValue = (value) => {},
-    onChangeSearchText = (text) => {},
-    onDirectionChanged = (direction) => {},
+    onLayout = (e) => { },
+    onPress = (open) => { },
+    onOpen = () => { },
+    onClose = () => { },
+    setValue = (callback) => { },
+    onChangeValue = (value) => { },
+    onChangeSearchText = (text) => { },
+    onDirectionChanged = (direction) => { },
     zIndex = 5000,
     zIndexInverse = 6000,
     rtl = false,
@@ -162,7 +162,7 @@ function Picker({
     testID,
     closeOnBackPressed = false,
     extendableBadgeContainer = false,
-    onSelectItem = (item) => {}
+    onSelectItem = (item) => { }
 }) {
     const [necessaryItems, setNecessaryItems] = useState([]);
     const [searchText, setSearchText] = useState('');
@@ -190,7 +190,7 @@ function Picker({
      * The item schema.
      * @returns {object}
      */
-     const _schema = useMemo(() => ({...SCHEMA, ...schema}), [schema]);
+    const _schema = useMemo(() => ({ ...SCHEMA, ...schema }), [schema]);
 
     /**
      * componentDidMount.
@@ -236,11 +236,11 @@ function Picker({
         setNecessaryItems(state => {
             return [...state].map(item => {
                 const _item = items.find(x => x[_schema.value] === item[_schema.value]);
-                
+
                 if (_item) {
-                    return {...item, ..._item};
+                    return { ...item, ..._item };
                 }
-                
+
                 return item;
             });
         });
@@ -254,7 +254,7 @@ function Picker({
             setNecessaryItems(state => {
                 if (value === null || (Array.isArray(value) && value.length === 0))
                     return [];
-                
+
                 let _state = [...state].filter(item => value.includes(item[_schema.value]));
 
                 const newItems = value.reduce((accumulator, currentValue) => {
@@ -262,7 +262,7 @@ function Picker({
 
                     if (index === -1) {
                         const item = items.find(item => item[_schema.value] === currentValue);
-                    
+
                         if (item) {
                             return [...accumulator, item];
                         }
@@ -285,7 +285,7 @@ function Picker({
                     state.push(item);
                 }
             }
-            
+
             setNecessaryItems(state);
         }
 
@@ -306,7 +306,7 @@ function Picker({
     /**
      * Update items in the memory.
      */
-     useEffect(() => {
+    useEffect(() => {
         memoryRef.current.items = necessaryItems;
     }, [necessaryItems]);
 
@@ -355,7 +355,7 @@ function Picker({
      * onPressToggle.
      */
     const onPressToggle = useCallback(() => {
-        const isOpen = ! open;
+        const isOpen = !open;
 
         setOpen(isOpen);
         setSearchText('');
@@ -408,7 +408,7 @@ function Picker({
                     });
                 } else {
                     const index = sortedItems.findIndex(item => item[_schema["value"]] === value);
-                    
+
                     if (index > -1)
                         flatListRef.current?.scrollToIndex?.({
                             index,
@@ -422,7 +422,7 @@ function Picker({
     /**
      * onScrollToIndexFailed.
      */
-     const onScrollToIndexFailed = useCallback(({averageItemLength, index}) => {
+    const onScrollToIndexFailed = useCallback(({ averageItemLength, index }) => {
         flatListRef.current.scrollToOffset?.({
             offset: averageItemLength * index,
             animated: true
@@ -433,7 +433,7 @@ function Picker({
      * The indices of all parent items.
      * @returns {object}
      */
-     const stickyHeaderIndices = useMemo(() => {
+    const stickyHeaderIndices = useMemo(() => {
         const stickyHeaderIndices = [];
         if (stickyHeader) {
             const parents = sortedItems.filter(item => item[_schema.parent] === undefined || item[_schema.parent] === null);
@@ -457,7 +457,7 @@ function Picker({
         } else {
             if (disableLocalSearch)
                 return sortedItems;
-    
+
             const values = [];
             const normalizeText = (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
@@ -516,7 +516,7 @@ function Picker({
      * @returns {object}
      */
     const selectedItems = useMemo(() => {
-        if (! multiple)
+        if (!multiple)
             return [];
 
         return necessaryItems.filter(item => _value.includes(item[_schema.value]));
@@ -550,7 +550,7 @@ function Picker({
      * The multiple text.
      * @returns {string}
      */
-     const _multipleText = useMemo(() => multipleText ?? _('SELECTED_ITEMS_COUNT_TEXT'), [multipleText, _]);
+    const _multipleText = useMemo(() => multipleText ?? _('SELECTED_ITEMS_COUNT_TEXT'), [multipleText, _]);
 
     /**
      * The mode.
@@ -568,12 +568,12 @@ function Picker({
      * Indicates whether the value is null.
      * @returns {boolean}
      */
-     const isNull = useMemo(() => {
+    const isNull = useMemo(() => {
         if (_value === null || (Array.isArray(_value) && _value.length === 0))
             return true;
 
         return necessaryItems.length === 0;
-     }, [necessaryItems, _value]);
+    }, [necessaryItems, _value]);
 
     /**
      * Get the selected item.
@@ -585,7 +585,7 @@ function Picker({
 
         if (isNull)
             return null;
-        
+
         try {
             return necessaryItems.find(item => item[_schema.value] === _value);
         } catch (e) {
@@ -604,11 +604,11 @@ function Picker({
         if (multiple)
             if (item.length > 0) {
                 let mtext = _multipleText;
-                
+
                 if (typeof mtext !== 'string') {
                     mtext = mtext[item.length] ?? mtext.n;
                 }
-                
+
                 return mtext.replace('{count}', item.length);
             } else
                 return fallback;
@@ -646,7 +646,7 @@ function Picker({
      * onPress.
      */
     const __onPress = useCallback(async () => {
-        const isOpen = ! open;
+        const isOpen = !open;
 
         onPress(isOpen);
 
@@ -681,7 +681,7 @@ function Picker({
      * onLayout.
      */
     const __onLayout = useCallback((e) => {
-        if(Platform.OS !== "web")
+        if (Platform.OS !== "web")
             e.persist();
 
         onLayout(e);
@@ -715,7 +715,7 @@ function Picker({
      * Disable borderRadius for the drop down.
      * @returns {object}
      */
-     const dropDownNoBorderRadius = useMemo(() => {
+    const dropDownNoBorderRadius = useMemo(() => {
         if (listMode === LIST_MODE.MODAL)
             return null;
 
@@ -728,7 +728,7 @@ function Picker({
                 borderBottomRightRadius: 0,
             };
         }
-     }, [disableBorderRadius, open, direction, listMode]);
+    }, [disableBorderRadius, open, direction, listMode]);
 
     /**
      * The disabled style.
@@ -776,7 +776,7 @@ function Picker({
     const _labelStyle = useMemo(() => ([
         THEME.label,
         ...[textStyle].flat(),
-        ...[! isNull && labelStyle].flat(),
+        ...[!isNull && labelStyle].flat(),
         ...[_placeholderStyle].flat(),
     ]), [textStyle, _placeholderStyle, labelStyle, isNull, THEME]);
 
@@ -815,7 +815,7 @@ function Picker({
      * The modal content container style.
      * @returns {object}
      */
-     const _modalContentContainerStyle = useMemo(() => ([
+    const _modalContentContainerStyle = useMemo(() => ([
         THEME.modalContentContainer,
         ...[modalContentContainerStyle].flat()
     ]), [modalContentContainerStyle, THEME]);
@@ -852,13 +852,13 @@ function Picker({
      * @returns {JSX.Element}
      */
     const _ArrowComponent = useMemo(() => {
-        if (! showArrowIcon)
+        if (!showArrowIcon)
             return null;
 
         let Component;
         if (open && ArrowUpIconComponent !== null)
             Component = <ArrowUpIconComponent style={_arrowIconStyle} />;
-        else if (! open && ArrowDownIconComponent !== null)
+        else if (!open && ArrowDownIconComponent !== null)
             Component = <ArrowDownIconComponent style={_arrowIconStyle} />;
         else
             Component = <Image source={open ? ICON.ARROW_UP : ICON.ARROW_DOWN} style={_arrowIconStyle} />;
@@ -882,7 +882,7 @@ function Picker({
      * The icon container style.
      * @returns {object}
      */
-     const _iconContainerStyle = useMemo(() => ([
+    const _iconContainerStyle = useMemo(() => ([
         RTL_STYLE(rtl, THEME.iconContainer),
         ...[iconContainerStyle].flat()
     ]), [rtl, iconContainerStyle, THEME]);
@@ -891,7 +891,7 @@ function Picker({
      * The selected item icon component.
      * @returns {JSX.Element|null}
      */
-     const SelectedItemIconComponent = useMemo(() => {
+    const SelectedItemIconComponent = useMemo(() => {
         const Component = _selectedItemIcon();
 
         if (hideSelectedItemIcon)
@@ -902,7 +902,7 @@ function Picker({
                 <Component />
             </View>
         );
-     }, [_selectedItemIcon, hideSelectedItemIcon, _iconContainerStyle]);
+    }, [_selectedItemIcon, hideSelectedItemIcon, _iconContainerStyle]);
 
     /**
      * The simple body component.
@@ -924,7 +924,7 @@ function Picker({
         setValue(state => {
             let _state = [...state];
             const index = _state.findIndex(item => item === value);
-                _state.splice(index, 1);
+            _state.splice(index, 1);
 
             return _state;
         });
@@ -957,7 +957,7 @@ function Picker({
      * @param {string} str
      * @returns {string}
      */
-     const getBadgeColor = useCallback((str) => {
+    const getBadgeColor = useCallback((str) => {
         str = `${str}`;
 
         const index = Math.abs(ASCII_CODE(str)) % _badgeColors.length;
@@ -969,7 +969,7 @@ function Picker({
      * @param {string} str
      * @returns {string}
      */
-     const getBadgeDotColor = useCallback((str) => {
+    const getBadgeDotColor = useCallback((str) => {
         str = `${str}`;
 
         const index = Math.abs(ASCII_CODE(str)) % _badgeDotColors.length;
@@ -988,7 +988,7 @@ function Picker({
      * Render badge.
      * @returns {JSX.Element}
      */
-    const __renderBadge = useCallback(({item}) => (
+    const __renderBadge = useCallback(({ item }) => (
         <RenderBadgeComponent
             props={badgeProps}
             rtl={rtl}
@@ -1028,7 +1028,7 @@ function Picker({
     const _itemKey = useMemo(() => {
         if (itemKey === null)
             return _schema.value;
-        
+
         return itemKey;
     }, [itemKey, _schema]);
 
@@ -1062,7 +1062,7 @@ function Picker({
     const labelContainerStyle = useMemo(() => ([
         THEME.labelContainer, rtl && {
             transform: [
-                {scaleX: -1}
+                { scaleX: -1 }
             ]
         }
     ]), [rtl, THEME]);
@@ -1109,7 +1109,7 @@ function Picker({
      * Extendable badge container.
      * @returns {JSX.Element}
      */
-    const ExtendableBadgeContainer = useCallback(({selectedItems}) => {
+    const ExtendableBadgeContainer = useCallback(({ selectedItems }) => {
         if (selectedItems.length > 0) {
             return (
                 <View style={extendableBadgeContainerStyle}>
@@ -1121,7 +1121,7 @@ function Picker({
                 </View>
             );
         }
-        
+
         return <BadgeListEmptyComponent />;
     }, [__renderBadge, extendableBadgeContainerStyle, extendableBadgeItemContainerStyle]);
 
@@ -1129,11 +1129,11 @@ function Picker({
      * The badge body component.
      * @returns {JSX.Element}
      */
-     const BadgeBodyComponent = useMemo(() => {
-        if (extendableBadgeContainer) { 
+    const BadgeBodyComponent = useMemo(() => {
+        if (extendableBadgeContainer) {
             return <ExtendableBadgeContainer selectedItems={selectedItems} />
         }
-        
+
         return (
             <FlatList
                 ref={setBadgeFlatListRef}
@@ -1179,7 +1179,7 @@ function Picker({
     const _listItemContainerStyle = useMemo(() => ([
         RTL_DIRECTION(rtl, THEME.listItemContainer),
         ...[listItemContainerStyle].flat(),
-        stickyHeader && {backgroundColor: THEME.style.backgroundColor},
+        stickyHeader && { backgroundColor: THEME.style.backgroundColor },
     ]), [rtl, listItemContainerStyle, THEME]);
 
     /**
@@ -1189,7 +1189,7 @@ function Picker({
     const _tickIconContainerStyle = useMemo(() => ([
         RTL_STYLE(rtl, THEME.tickIconContainer),
         ...[tickIconContainerStyle].flat()
-    ]), [rtl, tickIconContainerStyle,THEME]);
+    ]), [rtl, tickIconContainerStyle, THEME]);
 
     /**
      * The list item label style.
@@ -1216,7 +1216,7 @@ function Picker({
      */
     const _searchContainerStyle = useMemo(() => ([
         RTL_DIRECTION(rtl, THEME.searchContainer),
-        ...[searchContainerStyle].flat(), ! searchable && ! modalTitle && listMode === LIST_MODE.MODAL && {
+        ...[searchContainerStyle].flat(), !searchable && !modalTitle && listMode === LIST_MODE.MODAL && {
             flexDirection: 'row-reverse'
         }
     ]), [rtl, listMode, searchable, modalTitle, searchContainerStyle, THEME]);
@@ -1295,7 +1295,7 @@ function Picker({
 
         setValue(state => {
             if (multiple) {
-                let _state = state !== null && state !== undefined  ? [...state] : [];
+                let _state = state !== null && state !== undefined ? [...state] : [];
 
                 if (_state.includes(item[_schema.value])) {
                     // Remove the value
@@ -1349,7 +1349,7 @@ function Picker({
             }
         });
 
-        if (closeAfterSelecting && ! multiple)
+        if (closeAfterSelecting && !multiple)
             onPressClose();
     }, [
         setValue,
@@ -1369,7 +1369,7 @@ function Picker({
      * @returns {JSX.Element}
      */
     const _TickIconComponent = useCallback(() => {
-        if (! showTickIcon)
+        if (!showTickIcon)
             return null;
 
         let Component;
@@ -1433,7 +1433,7 @@ function Picker({
      * Render list item.
      * @returns {JSX.Element}
      */
-    const __renderListItem = useCallback(({item}) => {
+    const __renderListItem = useCallback(({ item }) => {
         let IconComponent = item[_schema.icon] ?? null;
 
         if (IconComponent) {
@@ -1531,7 +1531,7 @@ function Picker({
      * @returns {JSX.Element|null}
      */
     const ItemSeparatorComponent = useCallback(() => {
-        if (! itemSeparator)
+        if (!itemSeparator)
             return null;
 
         return (
@@ -1546,7 +1546,7 @@ function Picker({
      * The search placeholder.
      * @returns {string}
      */
-     const _searchPlaceholder = useMemo(() => {
+    const _searchPlaceholder = useMemo(() => {
         if (searchPlaceholder !== null)
             return searchPlaceholder;
 
@@ -1599,7 +1599,7 @@ function Picker({
      * modalTitleStyle.
      * @returns {object}
      */
-     const _modalTitleStyle = useMemo(() => ([
+    const _modalTitleStyle = useMemo(() => ([
         THEME.modalTitle,
         ...[modalTitleStyle].flat(),
         ...[textStyle].flat(),
@@ -1652,10 +1652,15 @@ function Picker({
      */
     const DropDownComponentWrapper = useCallback((Component) => (
         <Modal visible={open} onRequestClose={onRequestCloseModal} transparent={true} >
-            <View style={[_dropDownContainerStyle, { marginTop: yCoordinate + (direction == 'top' ? 10 : 0), width: pickerWidth, start: xCoordinate },]}>
-                {SearchComponent}
-                {Component}
-            </View>
+            <TouchableOpacity activeOpacity={1} style={{
+                backgroundColor: 'rgba(61, 61, 61, 0.4)'
+            }}
+                onPress={onRequestCloseModal}>
+                <View style={[_dropDownContainerStyle, { marginTop: yCoordinate + (direction == 'top' ? 10 : 0), width: pickerWidth, start: xCoordinate },]}>
+                    {SearchComponent}
+                    {Component}
+                </View>
+            </TouchableOpacity>
         </Modal>
     ), [_dropDownContainerStyle, SearchComponent, open]);
 
@@ -1710,7 +1715,7 @@ function Picker({
     const onRequestCloseModal = useCallback(() => {
         setOpen(false);
     }, []);
-    
+
     /**
      * The dropdown flatlist component.
      * @returns {JSX.Element}
@@ -1748,11 +1753,11 @@ function Picker({
     const DropDownScrollViewComponent = useMemo(() => {
         return (
             <ScrollView ref={scrollViewRef} nestedScrollEnabled={true} stickyHeaderIndices={stickyHeaderIndices} {...scrollViewProps}>
-                {_items.map((item, index) => { 
+                {_items.map((item, index) => {
                     return (
                         <Fragment key={item[_itemKey]}>
                             {index > 0 && ItemSeparatorComponent()}
-                            {__renderListItem({item})}
+                            {__renderListItem({ item })}
                         </Fragment>
                     );
                 })}
