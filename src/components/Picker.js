@@ -1177,8 +1177,7 @@ function Picker({
      * The floating label component.
      */
     const _FloatingLabelComponent = useMemo(() => {
-        const label = getLabel(null) || value
-        if (label != null && floatingLabelStyle != {}) {
+        if (value && floatingLabelStyle != {}) {
             return <Text style={[floatingLabelStyle, {
                 position: 'absolute',
                 top: -8,
